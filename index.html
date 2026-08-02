@@ -1,769 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VandalHub — Sri Lanka's #1 Hot Wheels & Auto Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>VandalHub - Hot Wheels</title>
     <style>
-        * {
+        /* සරල සුදු පසුබිම (Clean White Theme) */
+        body {
+            background-color: #ffffff;
+            color: #111111;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            text-align: center;
+        }
+        
+        /* ලෝගෝ එක සඳහා Header එක */
+        header {
+            padding: 30px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .logo {
+            max-width: 280px;
+            height: auto;
         }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #0a0a0f;
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Animated background cards */
-        .vh-bg-cards {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .hw-card {
-            position: absolute;
-            width: 140px;
-            height: 200px;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border: 1px solid rgba(255, 107, 0, 0.15);
-            border-radius: 12px;
+        /* පින්තූර පෙන්වන කොටස */
+        .gallery {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-wrap: wrap;
             justify-content: center;
-            opacity: 0.4;
-            animation: floatCard 20s infinite ease-in-out;
-            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.1);
-        }
-
-        .hw-card:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; transform: rotate(-15deg); }
-        .hw-card:nth-child(2) { top: 60%; left: 8%; animation-delay: 3s; transform: rotate(10deg); }
-        .hw-card:nth-child(3) { top: 20%; right: 10%; animation-delay: 6s; transform: rotate(8deg); }
-        .hw-card:nth-child(4) { top: 70%; right: 5%; animation-delay: 9s; transform: rotate(-12deg); }
-        .hw-card:nth-child(5) { top: 40%; left: 15%; animation-delay: 12s; transform: rotate(5deg); }
-        .hw-card:nth-child(6) { top: 15%; left: 40%; animation-delay: 15s; transform: rotate(-8deg); }
-        .hw-card:nth-child(7) { top: 80%; left: 45%; animation-delay: 18s; transform: rotate(12deg); }
-        .hw-card:nth-child(8) { top: 45%; right: 15%; animation-delay: 5s; transform: rotate(-5deg); }
-
-        .hw-card .car-icon {
-            font-size: 48px;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 0 8px rgba(255, 107, 0, 0.5));
-        }
-
-        .hw-card .card-label {
-            font-size: 10px;
-            color: #ff6b00;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        @keyframes floatCard {
-            0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
-            25% { transform: translateY(-20px) rotate(calc(var(--r, 0deg) + 3deg)); }
-            50% { transform: translateY(10px) rotate(calc(var(--r, 0deg) - 2deg)); }
-            75% { transform: translateY(-15px) rotate(calc(var(--r, 0deg) + 2deg)); }
-        }
-
-        /* Racing stripes background */
-        .vh-racing-stripes {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.03;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 50px,
-                #ff6b00 50px,
-                #ff6b00 52px,
-                transparent 52px,
-                transparent 102px,
-                #fff 102px,
-                #fff 104px
-            );
-        }
-
-        /* Main content */
-        .vh-content {
-            position: relative;
-            z-index: 1;
+            gap: 25px;
+            padding: 40px 20px;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
         }
 
-        /* Header */
-        .vh-header {
+        .card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            width: 260px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .price-tag {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #000000;
+        }
+
+        /* පාවෙන WhatsApp අයිකන් (Floating Icons) */
+        .floating-contact {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255, 107, 0, 0.2);
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
         }
 
-        .vh-logo {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .vh-logo-mark {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #ff6b00, #ff8c00);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            box-shadow: 0 0 30px rgba(255, 107, 0, 0.4);
-        }
-
-        .vh-logo-text {
-            font-family: 'Oswald', sans-serif;
-            font-size: 36px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, #fff 0%, #ff6b00 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .vh-nav {
-            display: flex;
-            gap: 32px;
-        }
-
-        .vh-nav a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
-
-        .vh-nav a:hover {
-            color: #ff6b00;
-        }
-
-        /* Hero Section */
-        .vh-hero {
-            text-align: center;
-            padding: 80px 0 60px;
-        }
-
-        .vh-hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 107, 0, 0.1);
-            border: 1px solid rgba(255, 107, 0, 0.3);
-            padding: 8px 20px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #ff6b00;
-            margin-bottom: 32px;
-            letter-spacing: 1px;
-        }
-
-        .vh-hero h1 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 72px;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-        }
-
-        .vh-hero h1 .accent {
-            color: #ff6b00;
-            text-shadow: 0 0 40px rgba(255, 107, 0, 0.5);
-        }
-
-        .vh-hero p {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.6);
-            max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-        }
-
-        .vh-cta-group {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .vh-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 36px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-        }
-
-        .vh-btn-primary {
-            background: linear-gradient(135deg, #ff6b00, #ff8c00);
-            color: #fff;
-            box-shadow: 0 4px 30px rgba(255, 107, 0, 0.4);
-        }
-
-        .vh-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(255, 107, 0, 0.6);
-        }
-
-        .vh-btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .vh-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Phone Section */
-        .vh-phone-section {
-            text-align: center;
-            padding: 40px 0;
-        }
-
-        .vh-phone-box {
-            display: inline-flex;
-            align-items: center;
-            gap: 16px;
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(255, 140, 0, 0.05));
-            border: 2px solid rgba(255, 107, 0, 0.3);
-            padding: 24px 48px;
-            border-radius: 16px;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .vh-phone-box:hover {
-            border-color: rgba(255, 107, 0, 0.6);
-            box-shadow: 0 0 40px rgba(255, 107, 0, 0.2);
-            transform: scale(1.02);
-        }
-
-        .vh-phone-icon {
-            width: 48px;
-            height: 48px;
-            background: #ff6b00;
-            border-radius: 12px;
+        .icon-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-        }
-
-        .vh-phone-info {
-            text-align: left;
-        }
-
-        .vh-phone-label {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-        }
-
-        .vh-phone-number {
-            font-family: 'Oswald', sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            color: #fff;
             text-decoration: none;
-            letter-spacing: 2px;
-        }
-
-        .vh-phone-number:hover {
-            color: #ff6b00;
-        }
-
-        /* Features Grid */
-        .vh-features {
-            padding: 60px 0;
-        }
-
-        .vh-section-title {
-            font-family: 'Oswald', sans-serif;
-            font-size: 42px;
-            text-align: center;
-            margin-bottom: 48px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .vh-features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .vh-feature-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 32px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vh-feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #ff6b00, #ff8c00);
-            transform: scaleX(0);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             transition: transform 0.3s;
         }
 
-        .vh-feature-card:hover::before {
-            transform: scaleX(1);
+        .icon-btn:hover {
+            transform: scale(1.1);
         }
 
-        .vh-feature-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 107, 0, 0.2);
-            transform: translateY(-4px);
+        .wa-chat {
+            background-color: #25D366; /* WhatsApp Green */
+        }
+        
+        .wa-channel {
+            background-color: #128C7E; /* Darker Green for Channel */
         }
 
-        .vh-feature-icon {
-            width: 56px;
-            height: 56px;
-            background: rgba(255, 107, 0, 0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .vh-feature-card h3 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 22px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .vh-feature-card p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        /* Delivery Banner */
-        .vh-delivery {
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(255, 140, 0, 0.05));
-            border: 1px solid rgba(255, 107, 0, 0.2);
-            border-radius: 20px;
-            padding: 48px;
-            margin: 40px 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vh-delivery::after {
-            content: '🚚';
-            position: absolute;
-            font-size: 200px;
-            opacity: 0.03;
-            right: -40px;
-            bottom: -40px;
-        }
-
-        .vh-delivery h2 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 36px;
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .vh-delivery p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 17px;
-            max-width: 700px;
-            margin: 0 auto 24px;
-            line-height: 1.6;
-        }
-
-        .vh-delivery-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 107, 0, 0.15);
-            padding: 12px 24px;
-            border-radius: 100px;
-            font-weight: 600;
-            color: #ff6b00;
-            font-size: 14px;
-        }
-
-        /* Product Cards */
-        .vh-products {
-            padding: 60px 0;
-        }
-
-        .vh-products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-        }
-
-        .vh-product-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .vh-product-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255, 107, 0, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .vh-product-img {
-            height: 200px;
-            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vh-product-img::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5) 100%);
-        }
-
-        .vh-product-info {
-            padding: 24px;
-        }
-
-        .vh-product-info h3 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 20px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .vh-product-info p {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        .vh-product-tag {
-            display: inline-block;
-            background: rgba(255, 107, 0, 0.15);
-            color: #ff6b00;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Discreet packaging notice */
-        .vh-discreet {
-            background: rgba(0, 200, 100, 0.05);
-            border: 1px solid rgba(0, 200, 100, 0.2);
-            border-radius: 16px;
-            padding: 32px;
-            margin: 40px 0;
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .vh-discreet-icon {
-            width: 64px;
-            height: 64px;
-            background: rgba(0, 200, 100, 0.1);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-        }
-
-        .vh-discreet-text h3 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 24px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #00c864;
-        }
-
-        .vh-discreet-text p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 15px;
-        }
-
-        /* Footer */
-        .vh-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 48px 0;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .vh-footer-logo {
-            font-family: 'Oswald', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: #ff6b00;
-            margin-bottom: 16px;
-            letter-spacing: 3px;
-        }
-
-        .vh-footer p {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 14px;
-        }
-
-        .vh-footer-phone {
-            margin-top: 16px;
-            font-size: 18px;
-        }
-
-        .vh-footer-phone a {
-            color: #ff6b00;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .vh-animate {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-        }
-
-        .vh-animate-d1 { animation-delay: 0.1s; }
-        .vh-animate-d2 { animation-delay: 0.2s; }
-        .vh-animate-d3 { animation-delay: 0.3s; }
-        .vh-animate-d4 { animation-delay: 0.4s; }
-        .vh-animate-d5 { animation-delay: 0.5s; }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .vh-hero h1 { font-size: 42px; }
-            .vh-section-title { font-size: 32px; }
-            .vh-nav { display: none; }
-            .vh-phone-number { font-size: 24px; }
-            .vh-delivery h2 { font-size: 28px; }
-            .vh-hero { padding: 40px 0; }
+        .icon-btn svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
         }
     </style>
 </head>
 <body>
-    <div class="vh-racing-stripes"></div>
-    
-    <div class="vh-bg-cards">
-        <div class="hw-card" style="--r: -15deg"><span class="car-icon">🏎️</span><span class="card-label">Speed</span></div>
-        <div class="hw-card" style="--r: 10deg"><span class="car-icon">🚗</span><span class="card-label">Street</span></div>
-        <div class="hw-card" style="--r: 8deg"><span class="car-icon">🏍️</span><span class="card-label">Race</span></div>
-        <div class="hw-card" style="--r: -12deg"><span class="car-icon">🚙</span><span class="card-label">Drift</span></div>
-        <div class="hw-card" style="--r: 5deg"><span class="car-icon">🛻</span><span class="card-label">Turbo</span></div>
-        <div class="hw-card" style="--r: -8deg"><span class="car-icon">🚐</span><span class="card-label">Wagon R</span></div>
-        <div class="hw-card" style="--r: 12deg"><span class="car-icon">🚕</span><span class="card-label">Lanka</span></div>
-        <div class="hw-card" style="--r: -5deg"><span class="car-icon">🏁</span><span class="card-label">Track</span></div>
+
+    <header>
+        <!-- ඔයාගේ ලෝගෝ එක -->
+        <img src="1785653344747.png" alt="VandalHub Logo" class="logo">
+    </header>
+
+    <main>
+        <!-- පින්තූර සහ මිල ගණන් මෙතනට ඔටෝම එකතු වේවි -->
+        <div class="gallery" id="car-gallery"></div>
+    </main>
+
+    <div class="floating-contact">
+        <!-- WhatsApp Channel Icon -->
+        <a href="https://whatsapp.com/channel/0029Vb8YpxP4IBhHk88qAT0W" target="_blank" class="icon-btn wa-channel" title="VandalHub WhatsApp Channel">
+            <svg viewBox="0 0 24 24">
+                <path d="M12.004 2c-5.464 0-9.914 4.417-9.98 9.878-.016 1.353.313 2.678.951 3.86L1.5 22l6.452-1.442a9.92 9.92 0 0 0 4.053.867h.004c5.466 0 9.897-4.453 9.897-9.926 0-2.651-1.03-5.143-2.906-7.018A9.874 9.874 0 0 0 12.004 2zm0 18.064c-1.282 0-2.542-.331-3.649-.955l-.261-.154-2.713.606.723-2.617-.17-.266a8.214 8.214 0 0 1-1.281-4.436c0-4.545 3.708-8.246 8.257-8.246 2.203 0 4.272.859 5.829 2.417 1.558 1.559 2.417 3.633 2.417 5.839 0 4.544-3.701 8.245-8.246 8.245h-.002z"/>
+                <path d="M16.5 14.5c-.3-.15-1.774-.875-2.049-.975-.275-.1-.475-.15-.675.15-.2.3-.775.975-.95 1.175-.175.2-.35.225-.65.075-.3-.15-1.265-.466-2.408-1.488-.89-.795-1.49-1.776-1.665-2.076-.175-.3-.019-.462.131-.611.135-.135.3-.3.45-.45.15-.15.2-.262.3-.437.1-.175.05-.325-.025-.475-.075-.15-.675-1.625-.925-2.225-.25-.6-.5-.519-.675-.531-.175-.012-.375-.012-.575-.012-.2 0-.525.075-.8.375-.275.3-1.05 1.025-1.05 2.5s1.075 2.875 1.225 3.075c.15.2 2.1 3.2 5.088 4.488.712.308 1.269.492 1.704.629.714.227 1.365.195 1.877.118.571-.086 1.774-.725 2.024-1.425.25-.7.25-1.3.175-1.425-.075-.125-.275-.2-.575-.35z"/>
+            </svg>
+        </a>
+        
+        <!-- WhatsApp Direct Message Icon -->
+        <a href="https://wa.me/94752005527" target="_blank" class="icon-btn wa-chat" title="Chat on WhatsApp">
+            <svg viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.297.446-.445.149-.149.199-.258.298-.43.099-.174.05-.326-.025-.474-.075-.149-.669-1.615-.916-2.21-.242-.579-.487-.5-.669-.51a5.352 5.352 0 0 0-.573-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.575-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+            </svg>
+        </a>
     </div>
-    
-    <div class="vh-content">
-        <!-- Header -->
-        <header class="vh-header vh-animate">
-            <div class="vh-logo">
-                <div class="vh-logo-mark">🏎️</div>
-                <div class="vh-logo-text">VandalHub</div>
-            </div>
-            <nav class="vh-nav">
-                <a href="#home">Home</a>
-                <a href="#products">Products</a>
-                <a href="#delivery">Delivery</a>
-                <a href="#contact">Contact</a>
-            </nav>
-        </header>
-        
-        <!-- Hero -->
-        <section class="vh-hero" id="home">
-            <div class="vh-hero-badge vh-animate">
-                <span>🔥</span> Sri Lanka's #1 Hot Wheels Destination
-            </div>
-            <h1 class="vh-animate vh-animate-d1">
-                Unleash Your<br><span class="accent">Inner Racer</span>
-            </h1>
-            <p class="vh-animate vh-animate-d2">
-                Premium die-cast collectibles, custom car accessories, and Sri Lankan auto culture — all in one hub. Built for the streets, delivered to your door.
-            </p>
-            <div class="vh-cta-group vh-animate vh-animate-d3">
-                <a href="tel:0752005527" class="vh-btn vh-btn-primary">
-                    <span>📞</span> Call Now
-                </a>
-                <a href="#products" class="vh-btn vh-btn-secondary">
-                    <span>🔥</span> View Collection
-                </a>
-            </div>
-        </section>
-        
-        <!-- Phone Section -->
-        <section class="vh-phone-section vh-animate vh-animate-d4" id="contact">
-            <a href="tel:0752005527" class="vh-phone-box">
-                <div class="vh-phone-icon">📱</div>
-                <div class="vh-phone-info">
-                    <div class="vh-phone-label">Call or WhatsApp</div>
-                    <div class="vh-phone-number">075 200 5527</div>
-                </div>
-            </a>
-        </section>
-        
-        <!-- Features -->
-        <section class="vh-features">
-            <h2 class="vh-section-title vh-animate">Why VandalHub?</h2>
-            <div class="vh-features-grid">
-                <div class="vh-feature-card vh-animate vh-animate-d1">
-                    <div class="vh-feature-icon">🇱🇰</div>
-                    <h3>Island Wide</h3>
-                    <p>We deliver to every corner of Sri Lanka — Colombo to Jaffna, Galle to Trincomalee. No place is too far.</p>
-                </div>
-                <div class="vh-feature-card vh-animate vh-animate-d2">
-                    <div class="vh-feature-icon">📦</div>
-                    <h3>Discreet Packaging</h3>
-                    <p>Your privacy matters. Prices are never visible on the courier package. Plain, secure, confidential delivery.</p>
-                </div>
-                <div class="vh-feature-card vh-animate vh-animate-d3">
-                    <div class="vh-feature-icon">⚡</div>
-                    <h3>Fast Dispatch</h3>
-                    <p>Orders processed within 24 hours. Express delivery options available for urgent racers.</p>
-                </div>
-                <div class="vh-feature-card vh-animate vh-animate-d4">
-                    <div class="vh-feature-icon">🏎️</div>
-                    <h3>Lankan Car Culture</h3>
-                    <p>Curated for Sri Lankan auto enthusiasts. From Wagon R mods to Hot Wheels collectibles — we get it.</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Delivery Banner -->
-        <section class="vh-delivery vh-animate" id="delivery">
-            <h2>🚛 Delivered Anywhere in Sri Lanka</h2>
-            <p>From the hills of Kandy to the beaches of Arugam Bay — we bring the heat to your doorstep. Cash on delivery available. Trusted courier partners ensure your package arrives safe, sound, and on time.</p>
-            <div class="vh-delivery-badge">
-                <span>✓</span> Island-wide coverage
-            </div>
-        </section>
-        
-        <!-- Products -->
-        <section class="vh-products" id="products">
-            <h2 class="vh-section-title vh-animate">Hot Picks</h2>
-            <div class="vh-products-grid">
-                <div class="vh-product-card vh-animate vh-animate-d1">
-                    <div class="vh-product-img">🏎️</div>
-                    <div class="vh-product-info">
-                        <h3>Track Legends Set</h3>
-                        <p>5-piece premium die-cast collection</p>
-                        <span class="vh-product-tag">Hot Wheels</span>
-                    </div>
-                </div>
-                <div class="vh-product-card vh-animate vh-animate-d2">
-                    <div class="vh-product-img">🚗</div>
-                    <div class="vh-product-info">
-                        <h3>Street Drift Series</h3>
-                        <p>Modified tuner car collectibles</p>
-                        <span class="vh-product-tag">Limited</span>
-                    </div>
-                </div>
-                <div class="vh-product-card vh-animate vh-animate-d3">
-                    <div class="vh-product-img">🏍️</div>
-                    <div class="vh-product-info">
-                        <h3>Superbike Miniatures</h3>
-                        <p>1:18 scale detailed replicas</p>
-                        <span class="vh-product-tag">New</span>
-                    </div>
-                </div>
-                <div class="vh-product-card vh-animate vh-animate-d4">
-                    <div class="vh-product-img">🚙</div>
-                    <div class="vh-product-info">
-                        <h3>Lankan Wagon R Kit</h3>
-                        <p>Custom accessories & decals pack</p>
-                        <span class="vh-product-tag">Local</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Discreet Packaging -->
-        <section class="vh-discreet vh-animate">
-            <div class="vh-discreet-icon">🔒</div>
-            <div class="vh-discreet-text">
-                <h3>100% Discreet Delivery</h3>
-                <p>We understand privacy. Our packaging contains no pricing information, no product labels, and no branding on the outside. What happens at VandalHub stays at VandalHub.</p>
-            </div>
-        </section>
-        
-        <!-- Footer -->
-        <footer class="vh-footer">
-            <div class="vh-footer-logo">VANDALHUB</div>
-            <p>© 2026 VandalHub Sri Lanka. All rights reserved.<br>Built for the streets. Delivered with pride.</p>
-            <p class="vh-footer-phone">
-                <a href="tel:0752005527">📞 075 200 5527</a>
-            </p>
-        </footer>
-    </div>
+
+    <script>
+        // ඔයා GitHub එකට upload කරන පින්තූර වල නම් (මිල ගණන්) මෙතනට දාන්න.
+        // ඔයා ෆොටෝ එක සේව් කරද්දී Rs2500.jpg වගේ නමකින් සේව් කරලා, ඒ නම මෙතන Array එකට එකතු කරන්න.
+        const imageFiles = [
+            "Rs.1500.jpg",
+            "Rs.2500.png",
+            "Rs.4000.jpeg"
+            // අලුතින් කාර් ෆොටෝ දාද්දි, ෆොටෝ එකේ නම උඩ තියෙන විදිහටම කොමා (,) එකකුත් එක්ක මෙතනට දාන්න
+        ];
+
+        const gallery = document.getElementById('car-gallery');
+
+        imageFiles.forEach(filename => {
+            // ෆයිල් එකේ නමෙන් අග තියෙන .jpg / .png වගේ දේවල් අයින් කරලා මිල විතරක් වෙන් කර ගැනීම
+            const price = filename.split('.').slice(0, -1).join('.');
+
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const img = document.createElement('img');
+            img.src = filename; // මේ නමින් තියෙන ෆොටෝ එක පෙන්නයි
+            img.alt = price;
+
+            const priceTag = document.createElement('div');
+            priceTag.className = 'price-tag';
+            priceTag.textContent = price; // ෆයිල් එකේ නම, මිල විදිහට පෙන්වයි
+
+            card.appendChild(img);
+            card.appendChild(priceTag);
+            gallery.appendChild(card);
+        });
+    </script>
 </body>
-    </html>
+</html>
