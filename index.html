@@ -58,26 +58,50 @@
             color: #fff;
         }
 
-        /* Product Grid */
+        /* Container & Search */
         .container {
-            padding: 40px 5%;
+            padding: 30px 5%;
             text-align: center;
         }
 
+        .search-box {
+            margin: 20px auto;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+        }
+
+        /* Product Grid */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 25px;
-            margin-top: 30px;
+            margin-top: 25px;
         }
 
         .card {
             background: #fff;
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 15px;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            text-align: left;
         }
 
         .card:hover {
@@ -87,15 +111,33 @@
 
         .card img {
             width: 100%;
-            height: 200px;
+            height: 180px;
             object-fit: cover;
             border-radius: 8px;
         }
 
-        .price-tag {
-            font-size: 1.2rem;
+        .item-code {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 4px 10px;
+            font-size: 0.8rem;
             font-weight: bold;
-            margin-top: 15px;
+            border-radius: 5px;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 12px 0 5px 0;
+            color: #222;
+        }
+
+        .price-tag {
+            font-size: 1.1rem;
+            font-weight: bold;
             color: #111;
         }
 
@@ -112,12 +154,14 @@
 
         .modal-content {
             background: #fff;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: left;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .close-btn {
@@ -128,19 +172,37 @@
             color: #888;
         }
 
-        .modal-content h3 {
-            margin-top: 0;
-            color: #111;
+        .modal-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .modal-preview img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .modal-preview-info p {
+            margin: 2px 0;
+            font-size: 0.9rem;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
         }
 
         .form-group input, .form-group textarea {
@@ -195,11 +257,8 @@
         }
 
         .fab-wa { background-color: #25D366; }
-        .fab-channel { background-color: #FF8C00; } /* Channel color distinction */
-        
-        .fab:hover {
-            transform: scale(1.1);
-        }
+        .fab-channel { background-color: #FF8C00; }
+        .fab:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
@@ -207,7 +266,7 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            <img src="1785653344747.png" alt="VandalHub Logo">
+            <img src="1785653344747.png" alt="VandalHub Logo" onerror="this.src='https://via.placeholder.com/150x50?text=VandalHub'">
         </div>
         <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">සිංහල / English</button>
     </header>
@@ -217,7 +276,12 @@
         <h2 id="titleText">Our Collections</h2>
         <p id="subText">Click on an item to purchase.</p>
         
-        <!-- Products will be injected here by JavaScript -->
+        <!-- Search Bar -->
+        <div class="search-box">
+            <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search by name or item code (e.g., ITEM-001)...">
+        </div>
+
+        <!-- Products Grid -->
         <div class="grid" id="productGrid"></div>
     </div>
 
@@ -237,7 +301,15 @@
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h3 id="modalTitle">Place Your Order</h3>
             
-            <p id="selectedItemDisplay" style="font-weight:bold; color: #555;"></p>
+            <!-- Item Preview inside Modal -->
+            <div class="modal-preview">
+                <img id="modalImg" src="" alt="Selected Item">
+                <div class="modal-preview-info">
+                    <p><strong>Code:</strong> <span id="modalCode"></span></p>
+                    <p><strong>Name:</strong> <span id="modalName"></span></p>
+                    <p><strong>Price:</strong> <span id="modalPrice"></span></p>
+                </div>
+            </div>
             
             <div class="form-group">
                 <label id="lblName">Name:</label>
@@ -246,7 +318,7 @@
             
             <div class="form-group">
                 <label id="lblAddress">Address:</label>
-                <textarea id="customerAddress" rows="3" required></textarea>
+                <textarea id="customerAddress" rows="2" required></textarea>
             </div>
             
             <div class="form-group">
@@ -260,7 +332,6 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // WhatsApp Business Number
         const whatsappNumber = "94752005527"; 
 
         // Language Dictionary
@@ -268,6 +339,7 @@
             en: {
                 title: "Our Collections",
                 sub: "Click on an item to purchase.",
+                searchPlaceholder: "Search by name or item code...",
                 modalTitle: "Place Your Order",
                 name: "Name:",
                 address: "Address:",
@@ -278,6 +350,7 @@
             si: {
                 title: "අපගේ එකතුව",
                 sub: "මිලදී ගැනීමට අවශ්‍ය භාණ්ඩය මත ක්ලික් කරන්න.",
+                searchPlaceholder: "නම හෝ අංකය (Code) අනුව සොයන්න...",
                 modalTitle: "ඔබගේ ඇණවුම ලබා දෙන්න",
                 name: "ඔබගේ නම:",
                 address: "ලිපිනය:",
@@ -287,89 +360,74 @@
             }
         };
 
-        let currentLang = 'en';
-        let selectedItemPrice = "";
-        let selectedImageName = "";
-
-        // ==========================================
-        // 🔹 HOW TO ADD IMAGES 🔹
-        // Upload your images to github, and add their EXACT filenames to this list.
-        // If the filename is "5000.jpg", the price shown will be "5000".
-        // ==========================================
-        const imagesUploadedToGithub = [
-            1"0.jpg",
-            2"0.png",
-            3"0.jpg",
-            4"0.jpeg" 
-            // Add your new image file names here!
+        // ===================================================
+        // 🔹 ඔබට අවශ්‍ය භාණ්ඩ (Items) මෙතැනට එකතු කරන්න 🔹
+        // code: භාණ්ඩයේ අංකය
+        // name: භාණ්ඩයේ නම
+        // price: මිල
+        // image: photo එකේ නම (GitHub upload කරපු නම)
+        // ===================================================
+        const productsList = [
+            { code: "ITEM-001", name: "Hot Wheels Nissan GT-R", price: "1500", image: "10.jpg" },
+            { code: "ITEM-002", name: "Hot Wheels Porsche 911", price: "2000", image: "20.png" },
+            { code: "ITEM-003", name: "Toyota Supra MK4 Card", price: "3000", image: "30.jpg" },
+            { code: "ITEM-004", name: "Mazda RX-7 Special Edition", price: "4500", image: "40.jpeg" }
         ];
 
-        // Function to extract price from file name (removes .jpg, .png etc.)
-        function extractPriceFromName(filename) {
-            return filename.split('.')[0]; 
-        }
+        let currentLang = 'en';
+        let selectedProduct = null;
 
-        // Render Products
-        function loadProducts() {
+        // Render Products Grid
+        function loadProducts(itemsToDisplay = productsList) {
             const grid = document.getElementById("productGrid");
             grid.innerHTML = "";
             
-            imagesUploadedToGithub.forEach(imgFile => {
-                const price = extractPriceFromName(imgFile);
-                
+            if (itemsToDisplay.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; color: #888;">No items found!</p>`;
+                return;
+            }
+
+            itemsToDisplay.forEach(item => {
                 const card = document.createElement("div");
                 card.className = "card";
-                // When clicked, open modal with price
-                card.onclick = () => openModal(price, imgFile);
+                card.onclick = () => openModal(item);
 
                 card.innerHTML = `
-                    <img src="${imgFile}" alt="Car Image" onerror="this.src='https://via.placeholder.com/250x200?text=Image+Not+Found'">
+                    <span class="item-code">${item.code}</span>
+                    <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/250x180?text=No+Image'">
+                    <div class="item-title">${item.name}</div>
                     <div class="price-tag">
-                        <span class="currency-symbol">${translations[currentLang].currency}</span>${price}
+                        <span>${translations[currentLang].currency}</span>${item.price}
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // Language Toggle
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'si' : 'en';
-            
-            document.getElementById("titleText").innerText = translations[currentLang].title;
-            document.getElementById("subText").innerText = translations[currentLang].sub;
-            document.getElementById("modalTitle").innerText = translations[currentLang].modalTitle;
-            document.getElementById("lblName").innerText = translations[currentLang].name;
-            document.getElementById("lblAddress").innerText = translations[currentLang].address;
-            document.getElementById("lblPhone").innerText = translations[currentLang].phone;
-            document.getElementById("btnSubmit").innerText = translations[currentLang].submit;
-            
-            // Update currency symbols on loaded products
-            const currencyElements = document.querySelectorAll(".currency-symbol");
-            currencyElements.forEach(el => el.innerText = translations[currentLang].currency);
-
-            if(selectedItemPrice !== "") {
-                updateModalItemText();
-            }
+        // Search Filter
+        function filterProducts() {
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            const filtered = productsList.filter(item => 
+                item.name.toLowerCase().includes(query) || 
+                item.code.toLowerCase().includes(query)
+            );
+            loadProducts(filtered);
         }
 
-        // Modal Functions
-        function openModal(price, imageName) {
-            selectedItemPrice = price;
-            selectedImageName = imageName;
-            updateModalItemText();
+        // Modal Controls
+        function openModal(item) {
+            selectedProduct = item;
+            
+            document.getElementById("modalImg").src = item.image;
+            document.getElementById("modalCode").innerText = item.code;
+            document.getElementById("modalName").innerText = item.name;
+            document.getElementById("modalPrice").innerText = `${translations[currentLang].currency}${item.price}`;
+            
             document.getElementById("checkoutModal").style.display = "flex";
         }
 
         function closeModal() {
             document.getElementById("checkoutModal").style.display = "none";
-        }
-
-        function updateModalItemText() {
-            const text = currentLang === 'en' 
-                ? `Selected Item Price: Rs. ${selectedItemPrice}` 
-                : `තෝරාගත් භාණ්ඩයේ මිල: රු. ${selectedItemPrice}`;
-            document.getElementById("selectedItemDisplay").innerText = text;
         }
 
         // Send Details to WhatsApp
@@ -383,32 +441,52 @@
                 return;
             }
 
-            // Creating the WhatsApp Message
+            // Order message format
             let message = `*New Order Received!*\n\n`;
-            message += `*Item Image Name:* ${selectedImageName}\n`;
-            message += `*Item Price:* Rs. ${selectedItemPrice}\n\n`;
-            message += `*Customer Details:*\n`;
-            message += `Name: ${name}\n`;
-            message += `Address: ${address}\n`;
-            message += `Phone: ${phone}`;
+            message += `📌 *Item Code:* ${selectedProduct.code}\n`;
+            message += `🚗 *Item Name:* ${selectedProduct.name}\n`;
+            message += `💰 *Item Price:* Rs. ${selectedProduct.price}\n`;
+            message += `🖼️ *Image File:* ${selectedProduct.image}\n\n`;
+            message += `👤 *Customer Details:*\n`;
+            message += `• Name: ${name}\n`;
+            message += `• Address: ${address}\n`;
+            message += `• Phone: ${phone}`;
 
-            // Encode for URL
             const encodedMessage = encodeURIComponent(message);
-            
-            // Open WhatsApp
             const waUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-            window.open(waUrl, '_blank');
             
-            // Close modal & clear fields
+            window.open(waUrl, '_blank');
             closeModal();
+
+            // Clear inputs
             document.getElementById("customerName").value = "";
             document.getElementById("customerAddress").value = "";
             document.getElementById("customerPhone").value = "";
         }
 
-        // Load Initial Products
-        window.onload = loadProducts;
+        // Language Toggle
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'si' : 'en';
+            
+            document.getElementById("titleText").innerText = translations[currentLang].title;
+            document.getElementById("subText").innerText = translations[currentLang].sub;
+            document.getElementById("searchInput").placeholder = translations[currentLang].searchPlaceholder;
+            document.getElementById("modalTitle").innerText = translations[currentLang].modalTitle;
+            document.getElementById("lblName").innerText = translations[currentLang].name;
+            document.getElementById("lblAddress").innerText = translations[currentLang].address;
+            document.getElementById("lblPhone").innerText = translations[currentLang].phone;
+            document.getElementById("btnSubmit").innerText = translations[currentLang].submit;
+            
+            // Reload grid to update currency text
+            filterProducts();
 
+            if (selectedProduct) {
+                document.getElementById("modalPrice").innerText = `${translations[currentLang].currency}${selectedProduct.price}`;
+            }
+        }
+
+        // Initial Load
+        window.onload = loadProducts;
     </script>
 </body>
 </html>
