@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VandalHub - Sri Lanka's Best Diecast & Hot Wheels Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Abhaya+Libre:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --primary-orange: #f89820;
+            --text-light: #ffffff;
+            --card-bg: #141414;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- SUBTLE HOT WHEELS BACKGROUND ANIMATION --- */
+        .bg-watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.05; /* ඉතා අඩුවෙන් පෙනෙන ලෙස (Subtle) */
+            background-image: url('https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%) contrast(200%);
+            animation: bgPulse 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* --- HEADER & NAVBAR --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 2px solid var(--primary-orange);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* පළවෙනි පින්තූරයේ ලෝගෝ එක මෙතනට එක් කරන්න */
+        .logo-img {
+            height: 45px;
+            object-fit: contain;
+        }
+
+        /* දෙවෙනි පින්තූරයේ DP එක මෙතනට එක් කරන්න */
+        .dp-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-orange);
+            object-fit: cover;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #fff, var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 25px;
+            color: #cccccc;
+        }
+
+        .delivery-badge {
+            background: rgba(248, 152, 32, 0.15);
+            border: 1px solid var(--primary-orange);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--primary-orange);
+            margin-bottom: 30px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-8px);}
+            60% {transform: translateY(-4px);}
+        }
+
+        /* --- PRODUCTS SECTION --- */
+        .products-section {
+            padding: 60px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: var(--primary-orange);
+            text-transform: uppercase;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #222;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(248, 152, 32, 0.2);
+            border-color: var(--primary-orange);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: #1f1f1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: var(--primary-orange);
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-orange);
+            color: #000;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            background: #ffaa40;
+        }
+
+        /* --- FLOATING WHATSAPP BUTTON --- */
+        .whatsapp-float {
+            position: fixed;
+            width: 65px;
+            height: 65px;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 35px;
+            box-shadow: 0px 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            color: #fff;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #050505;
+            border-top: 1px solid #1f1f1f;
+            margin-top: 50px;
+        }
+
+        footer p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Subtle Background Image -->
+    <div class="bg-watermark"></div>
+
+    <!-- Header / Navbar -->
+    <header>
+        <div class="logo-container">
+            <!-- 
+                ඔබගේ පළවෙනි ලෝගෝ එකේ නම 'logo.png' ලෙස ද, 
+                දෙවෙනි DP පින්තූරය 'dp.jpg' ලෙස ද Save කර මෙතනට නම දෙන්න.
+            -->
+            <img src="1785653344747.png" alt="VandalHub Logo" class="logo-img">
+            <img src="IMG-20260802-WA0003.jpg" alt="DP Badge" class="dp-badge">
+        </div>
+        <div style="font-weight: 600; color: var(--primary-orange);">
+            <i class="fa-solid fa-location-dot"></i> Sri Lanka
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="delivery-badge">
+            <i class="fa-solid fa-truck-fast"></i> ලංකාවේ ඕනෑම තැනකට Courier මගින් Delivery කරනු ලැබේ!
+        </div>
+        <h1>VandalHub</h1>
+        <p>ලංකාවේ අඩුම මිලට උසස්ම තත්ත්වයේ Hot Wheels, Diecast සහ Toy Cars ලබාගන්න එකම තැන.</p>
+        <a href="https://wa.me/94752005527?text=Hi%20VandalHub,%20මට%20කාර්%20ගැන%20දැනගන්න%20ඕනේ" 
+           target="_blank" 
+           class="buy-btn" 
+           style="max-width: 250px; text-decoration: none;">
+           <i class="fa-brands fa-whatsapp"></i> WhatsApp හරහා අමතන්න
+        </a>
+    </section>
+
+    <!-- Product Showcase -->
+    <section class="products-section">
+        <h2 class="section-title">Latest Arrivals</h2>
+        
+        <div class="product-grid">
+            <!-- Card 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?auto=format&fit=crop&w=600&q=80" alt="Hot Wheels Car">
+                </div>
+                <div class="product-info">
+                    <h3>Hot Wheels GT Sport Edition</h3>
+                    <div class="price">LKR 1,800</div>
+                    <!-- Order Link -->
+                    <a href="https://wa.me/94752005527?text=Hi%20VandalHub,%20මට%20Hot%20Wheels%20GT%20Sport%20එක%20මිලදී%20ගන්න%20ඕනේ" target="_blank" class="buy-btn">
+                        Order via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1594787318286-3d835c1d207f?auto=format&fit=crop&w=600&q=80" alt="Diecast Classic">
+                </div>
+                <div class="product-info">
+                    <h3>1:32 Custom Muscle Car</h3>
+                    <div class="price">LKR 3,500</div>
+                    <a href="https://wa.me/94752005527?text=Hi%20VandalHub,%20මට%20Custom%20Muscle%20Car%20එක%20මිලදී%20ගන්න%20ඕනේ" target="_blank" class="buy-btn">
+                        Order via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1508898578281-774ac4893c0c?auto=format&fit=crop&w=600&q=80" alt="Sports Diecast">
+                </div>
+                <div class="product-info">
+                    <h3>JDM Special Diecast Model</h3>
+                    <div class="price">LKR 2,900</div>
+                    <a href="https://wa.me/94752005527?text=Hi%20VandalHub,%20මට%20JDM%20Special%20එක%20මිලදී%20ගන්න%20ඕනේ" target="_blank" class="buy-btn">
+                        Order via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/94752005527?text=Hi%20VandalHub,%20මම%20Website%20එකෙන්%20එන්නේ!" 
+       target="_blank" 
+       class="whatsapp-float">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 VandalHub. All Rights Reserved. | Islandwide Courier Delivery Available 🇱🇰</p>
+    </footer>
+
+</body>
+</html>
