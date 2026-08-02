@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VandalHub - Hot Wheels & Cards</title>
     
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* General Styling */
         :root {
             --bg-color: #ffffff;
             --text-color: #333333;
-            --primary-color: #25D366; /* WhatsApp Green */
+            --primary-color: #25D366;
             --border-color: #eeeeee;
         }
 
@@ -25,7 +23,6 @@
             padding: 0;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -58,7 +55,6 @@
             color: #fff;
         }
 
-        /* Container & Search */
         .container {
             padding: 30px 5%;
             text-align: center;
@@ -67,7 +63,6 @@
         .search-box {
             margin: 20px auto;
             max-width: 500px;
-            position: relative;
         }
 
         .search-box input {
@@ -85,7 +80,6 @@
             border-color: var(--primary-color);
         }
 
-        /* Product Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -141,11 +135,13 @@
             color: #111;
         }
 
-        /* Modal (Checkout Form) */
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
             background: rgba(0, 0, 0, 0.6);
             z-index: 1000;
             justify-content: center;
@@ -166,7 +162,8 @@
 
         .close-btn {
             position: absolute;
-            top: 15px; right: 15px;
+            top: 15px; 
+            right: 15px;
             font-size: 1.5rem;
             cursor: pointer;
             color: #888;
@@ -231,7 +228,6 @@
             background-color: #1ebe56;
         }
 
-        /* Floating Actions */
         .floating-icons {
             position: fixed;
             bottom: 20px;
@@ -263,7 +259,6 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo">
             <img src="1785653344747.png" alt="VandalHub Logo" onerror="this.src='https://via.placeholder.com/150x50?text=VandalHub'">
@@ -271,21 +266,17 @@
         <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">සිංහල / English</button>
     </header>
 
-    <!-- Main Content -->
     <div class="container">
         <h2 id="titleText">Our Collections</h2>
         <p id="subText">Click on an item to purchase.</p>
         
-        <!-- Search Bar -->
         <div class="search-box">
             <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search by name or item code (e.g., ITEM-001)...">
         </div>
 
-        <!-- Products Grid -->
         <div class="grid" id="productGrid"></div>
     </div>
 
-    <!-- Floating Icons -->
     <div class="floating-icons">
         <a href="https://whatsapp.com/channel/0029Vb8YpxP4IBhHk88qAT0W" target="_blank" class="fab fab-channel" title="Join our WhatsApp Channel">
             <i class="fa-solid fa-bullhorn"></i>
@@ -295,13 +286,11 @@
         </a>
     </div>
 
-    <!-- Checkout Modal -->
     <div class="modal" id="checkoutModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h3 id="modalTitle">Place Your Order</h3>
             
-            <!-- Item Preview inside Modal -->
             <div class="modal-preview">
                 <img id="modalImg" src="" alt="Selected Item">
                 <div class="modal-preview-info">
@@ -330,11 +319,9 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
     <script>
         const whatsappNumber = "94752005527"; 
 
-        // Language Dictionary
         const translations = {
             en: {
                 title: "Our Collections",
@@ -360,13 +347,6 @@
             }
         };
 
-        // ===================================================
-        // 🔹 ඔබට අවශ්‍ය භාණ්ඩ (Items) මෙතැනට එකතු කරන්න 🔹
-        // code: භාණ්ඩයේ අංකය
-        // name: භාණ්ඩයේ නම
-        // price: මිල
-        // image: photo එකේ නම (GitHub upload කරපු නම)
-        // ===================================================
         const productsList = [
             { code: "ITEM-001", name: "Hot Wheels Nissan GT-R", price: "1500", image: "10.jpg" },
             { code: "ITEM-002", name: "Hot Wheels Porsche 911", price: "2000", image: "20.png" },
@@ -377,7 +357,6 @@
         let currentLang = 'en';
         let selectedProduct = null;
 
-        // Render Products Grid
         function loadProducts(itemsToDisplay = productsList) {
             const grid = document.getElementById("productGrid");
             grid.innerHTML = "";
@@ -404,7 +383,6 @@
             });
         }
 
-        // Search Filter
         function filterProducts() {
             const query = document.getElementById("searchInput").value.toLowerCase();
             const filtered = productsList.filter(item => 
@@ -414,7 +392,6 @@
             loadProducts(filtered);
         }
 
-        // Modal Controls
         function openModal(item) {
             selectedProduct = item;
             
@@ -430,7 +407,6 @@
             document.getElementById("checkoutModal").style.display = "none";
         }
 
-        // Send Details to WhatsApp
         function sendToWhatsApp() {
             const name = document.getElementById("customerName").value;
             const address = document.getElementById("customerAddress").value;
@@ -441,7 +417,6 @@
                 return;
             }
 
-            // Order message format
             let message = `*New Order Received!*\n\n`;
             message += `📌 *Item Code:* ${selectedProduct.code}\n`;
             message += `🚗 *Item Name:* ${selectedProduct.name}\n`;
@@ -458,13 +433,11 @@
             window.open(waUrl, '_blank');
             closeModal();
 
-            // Clear inputs
             document.getElementById("customerName").value = "";
             document.getElementById("customerAddress").value = "";
             document.getElementById("customerPhone").value = "";
         }
 
-        // Language Toggle
         function toggleLanguage() {
             currentLang = currentLang === 'en' ? 'si' : 'en';
             
@@ -477,7 +450,6 @@
             document.getElementById("lblPhone").innerText = translations[currentLang].phone;
             document.getElementById("btnSubmit").innerText = translations[currentLang].submit;
             
-            // Reload grid to update currency text
             filterProducts();
 
             if (selectedProduct) {
@@ -485,7 +457,6 @@
             }
         }
 
-        // Initial Load
         window.onload = loadProducts;
     </script>
 </body>
